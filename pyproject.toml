@@ -1,0 +1,13 @@
+[project]
+name = "asterius"
+version = "0.1.0"
+authors = [
+    { name = "Matt Coleman", email = "msbc@princeton.edu" }
+]
+description = "Asterius - A tool for file information and comparison"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.scripts]
+asterius = "main:main"
