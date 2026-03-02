@@ -52,19 +52,16 @@ def safe_file_info(path: Path) -> tuple[int, str, str]:
 
 
 def collect_rows(
-    base: Path, paths: Iterable[Path], absolute: bool
+    base: Path, paths: Iterable[Path], absolute: bool, echo=True
 ) -> list[tuple[str, int, str, str]]:
     rows: list[tuple[str, int, str, str]] = []
     for path in paths:
         display_path = str(path if absolute else path.relative_to(base))
         size, mtime, checksum = safe_file_info(path)
         rows.append((display_path, size, mtime, checksum))
+        if echo:
+            print(f"{display_path}\t{size}\t{mtime}\t{checksum}")
     return rows
-
-
-def print_rows(rows: list[tuple[str, int, str, str]]) -> None:
-    for path, size, mtime, checksum in rows:
-        print(f"{path}\t{size}\t{mtime}\t{checksum}")
 
 
 def build_index(base: Path, recursive: bool = True) -> dict[str, Path]:
@@ -183,8 +180,7 @@ def main() -> None:
     if not base.is_dir():
         raise SystemExit(f"Not a directory: {base}")
 
-    rows = collect_rows(base, iter_files(base, args.recursive), args.absolute)
-    print_rows(rows)
+    _ = collect_rows(base, iter_files(base, args.recursive), args.absolute)
 
 
 if __name__ == "__main__":
